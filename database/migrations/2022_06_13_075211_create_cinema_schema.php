@@ -34,8 +34,43 @@ class CreateCinemaSchema extends Migration
      * As a user I want to know where I'm sitting on my ticket
      * As a cinema owner I dont want to configure the seating for every show
      */
+
+    
+    
+    
+    
     public function up()
     {
+        Schema::create('films', function($table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('film_slots', function($table) {
+            $table->increments('id');
+            $table->integer('film_id')->unsigned();
+            $table->foreign('film_id')->references('id')->on('films')->onDelete('cascade');
+            $table->time('start_time');
+            $table->time('end_time');
+            $table->string('status');
+            $table->timestamps();
+        });
+
+        Schema::create('film_slot_book', function($table) {
+            $table->increments('id');
+            $table->integer('film_slot_id')->unsigned();
+            $table->foreign('film_slot_id')->references('id')->on('film_slots')->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->string('seat_type');
+            $table->string('status');
+            $table->timestamps();
+        });
+
+
         throw new \Exception('implement in coding task 4, you can ignore this exception if you are just running the initial migrations.');
     }
 

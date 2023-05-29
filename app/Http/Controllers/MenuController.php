@@ -93,6 +93,26 @@ class MenuController extends BaseController
      */
 
     public function getMenuItems() {
+
+        $menuitem = MenuItem::all();
+
+        $list = [];
+        foreach($menuitem as $menu)
+        {
+            $menuitem = MenuItem::where('menu_id',$menu->id)->get();
+            array_push($list, [
+                "id" =>  $menu->id,
+                "name" => $menu->name,
+                "url" => $menu->url,
+                "parent_id" => $menu->parent_id,
+                "created_at" => $menu->created_at,
+                "updated_at" => $menu->updated_at,
+                'children' => $menuitem
+            ]);
+        }
+        return $list;
+
+        
         throw new \Exception('implement in coding task 3');
     }
 }
